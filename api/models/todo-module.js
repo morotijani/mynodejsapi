@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
 const mysql = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD,{
     host: process.env.DB_HOST,
     dialect: 'mysql',
@@ -12,9 +12,9 @@ const Todo = mysql.define('Todo', {
     },
     name: {
         type: DataTypes.STRING,
-        Validate: {
+        validate: {
             len: {
-                msg: "Name must be between 2 and 225 characters.",
+                msg: "Name must be between 2 and 255 characters.",
                 args: [2, 255]
             }
         }
@@ -23,12 +23,12 @@ const Todo = mysql.define('Todo', {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
-}, {
+},{
     indexes: [
-        {fields: ['user_id']},
+        {fields:['user_id']},
         {fields: ['user_id', 'completed']}
     ]
 });
 
 Todo.sync();
-Model.exports = Todo;
+module.exports = Todo;
