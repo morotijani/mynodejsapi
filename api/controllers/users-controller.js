@@ -57,7 +57,7 @@ class UsersController {
     login = () => {
         return async (req, res, next) => {
             const msg = "something is wrong with your email or passwors.";
-            const errors =[{path: "password", message: msg}, {path: "email", msg: msg}];
+            const errors =[{path: "password", message: msg}, {path: "email", message: msg}];
             const resp = {success: false, errors: errors};
             const user = await User.findOne({where: {email: req.body.email}});
             const password = req.body.password;
