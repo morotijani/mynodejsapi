@@ -1,5 +1,5 @@
-const User = require("../models/user-module");
-const bcrypt = require('bcrypt');
+const User = require("../models/user-model");
+const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 class UsersController {
 
@@ -33,8 +33,8 @@ class UsersController {
         return async (req, res, next) => {
             const resp = {success:false, user: null}
             const userId = req.params.id;
-            if (userId != req.userData.id) {
-                return res.status(401).json({msg: "You do not have permission to update this user."});
+            if(userId != req.userData.id) {
+                return res.status(401).json({msg: "You do not have permission to update this user."})
             }
             const user = await User.findByPk(userId)
             if(user) {
@@ -56,14 +56,14 @@ class UsersController {
 
     login = () => {
         return async (req, res, next) => {
-            const msg = "something is wrong with your email or passwors.";
-            const errors =[{path: "password", message: msg}, {path: "email", message: msg}];
+            const msg = "Something is wrong with your email or password."
+            const errors = [{path:"password", message: msg}, {path: "email", message: msg}];
             const resp = {success: false, errors: errors};
-            const user = await User.findOne({where: {email: req.body.email}});
+            const user = await User.findOne({where:{email: req.body.email}});
             const password = req.body.password;
-            if (user) {
+            if(user) {
                 const passed = await bcrypt.compare(password, user.password);
-                if (passed) {
+                if(passed) {
                     const signVals = user.toJSON();
                     delete signVals.password;
                     const token = await jwt.sign(signVals, process.env.JWT_KEY, {
@@ -80,8 +80,8 @@ class UsersController {
 
     loggedInUser = () => {
         return async (req, res, next) => {
-            const resp = {success: false, user: null, msg: "User not found."};
-            const token = req.headers.authorization? req.headers.authorization.split(' ')[1] : "";
+            const resp = {success: false, user: null, msg: "User not found"};
+            const token = req.headers.authorization? req.headers.authorization.split(' ')[1]:"";
             const decoded = await jwt.verify(token, process.env.JWT_KEY);
             const user = await User.findByPk(decoded.id);
             const data = user.toJSON();

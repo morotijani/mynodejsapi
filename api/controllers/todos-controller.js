@@ -1,4 +1,4 @@
-const Todo = require('../models/todo-module');
+const Todo = require('../models/todo-model');
 
 class TodosController {
     getAll = () => { 
@@ -34,14 +34,14 @@ class TodosController {
     }
 
     findById = () => {
-        return async (req, res, next) => {
+        return async(req, res, next) => {
             const userId = req.userData.id;
             const todoId = req.params.id;
             const todo = await Todo.findOne({
                 where: {id: todoId, user_id: userId}
             });
             const resp = {success: false, todo: null}
-            if (todo) {
+            if(todo) {
                 resp.success = true;
                 resp.todo = todo;
             }
@@ -53,17 +53,17 @@ class TodosController {
         return async (req, res, next) => {
             const todoId = req.params.id;
             const userId = req.userData.id;
-            const resp = {success: false, msg: "Todo not found."}
+            const resp = {success: false, msg: "Todo not found"}
             const todo = await Todo.findOne({
                 where: {id: todoId, user_id: userId}
             });
-            if (todo) {
+            if(todo) {
                 const vals = {name: req.body.name, completed: req.body.completed};
-                await Todo.update(vals, {where: {id:todoId}});
+                await Todo.update(vals, {where:{id:todoId}});
                 await todo.reload();
                 resp.success = true;
-                resp.msg = "Todo Updated";
-                resp.todo = todo;
+                resp.msg = "Todo updated"
+                resp.todo = todo
             }
             res.status(200).json(resp);
         }
@@ -75,10 +75,10 @@ class TodosController {
             const userId = req.userData.id;
             const todo = await Todo.findOne({
                 where: {id: todoId, user_id: userId}
-            });
-            const resp = {success: false, msg: "Todo not found."}
-            if (todo) {
-                await Todo.destroy({where: {id: todoId, user_id: userId}});
+            })
+            const resp = {success: false, msg: "Todo not found"}
+            if(todo) {
+                await Todo.destroy({where: {id: todoId, user_id: userId}})
                 resp.success = true;
                 resp.msg = "Todo deleted";
             }

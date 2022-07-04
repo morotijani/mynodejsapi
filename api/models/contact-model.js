@@ -1,5 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const mysql = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+const {Sequelize, DataTypes} = require('sequelize');
+const mysql = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD,{
     host: process.env.DB_HOST,
     dialect: 'mysql',
     pool: {min: 0, max: 5}
@@ -13,13 +13,13 @@ const Contact = mysql.define('Contact', {
     fname: {
         type: DataTypes.STRING
     },
-    lname: {
+    lname : {
         type: DataTypes.STRING
     },
     email: {
         type: DataTypes.STRING(155)
     },
-    phone: {
+    phone : {
         type: DataTypes.STRING(55)
     }
 },{
@@ -29,5 +29,4 @@ const Contact = mysql.define('Contact', {
 });
 
 Contact.sync();
-
 module.exports = Contact;

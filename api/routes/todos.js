@@ -3,7 +3,7 @@ const router = express.Router();
 const TodosController = require('../controllers/todos-controller');
 const userAuth = require('../middleware/check-auth');
 
-router.get('/', userAuth ,TodosController.getAll());
+router.get('/', userAuth, TodosController.getAll());
 
 router.post('/', userAuth, TodosController.create());
 
